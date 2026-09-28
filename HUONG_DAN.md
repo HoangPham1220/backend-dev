@@ -223,7 +223,8 @@ thay đổi so với nhánh `main` và kết quả `npm run ticket 9`.
 
 **Phòng tập (khoảng 1 giờ)**
 
-1. `cd /var/www/html/personal-project/backend-dev`, chạy `git init`, commit lần đầu.
+1. `cd /var/www/html/personal-project/backend-dev`. Repo đã có git và đã nối GitHub
+   (`github.com/HoangPham1220/backend-dev`): cuối mỗi buổi `git add -A && git commit -m "..." && git push`.
 2. Gõ `/bat-dau-buoi` để ôn 5 câu có sẵn trong `REVIEW.md`.
 3. Làm `w1-01`, rồi `w1-02` (đoán kết quả trước, chạy sau). Hai bài này cho biết phần nào lướt nhanh được.
 
@@ -238,7 +239,8 @@ thay đổi so với nhánh `main` và kết quả `npm run ticket 9`.
    npm run dev
    ```
 5. Mở http://localhost:3000 và đi một vòng. Trang sản phẩm sẽ hiện 🚧 VX-09: cả cửa hàng đang chờ bạn làm.
-6. `git init`, `git add -A`, commit "Trạng thái ban đầu". File `.env` đã nằm trong `.gitignore`.
+6. Repo Voltix đã có git và đã nối GitHub (`github.com/HoangPham1220/voltix-store`, commit "Trạng thái ban đầu").
+   Mỗi ticket xong: merge vào `main` rồi `git push`. File `.env` nằm trong `.gitignore`, không bao giờ bị push.
 7. Đọc `docs/QUY_TRINH.md` và `tickets/README.md`, rồi làm VX-01 theo đúng quy trình: tạo nhánh → code →
    `npm run ticket 1` → tự review → merge.
 

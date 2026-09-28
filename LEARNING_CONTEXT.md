@@ -124,4 +124,4 @@ lỗi chính tả `quanity` gây `ReferenceError`; khởi tạo `finalPrice = 0`
 
 **Bước tiếp theo:** bắt đầu tuần 1 ngày 01/10. Buổi đầu: một bài kiểm tra nhanh gộp các chủ đề trên
 (để xác định cái gì bỏ qua được), chạy Voltix lần đầu (`docker compose up -d`, migrate, seed, dev),
-`git init` cho voltix-store, rồi làm VX-01.
+rồi làm VX-01 (cả hai repo đã có git và đã push lên GitHub HoangPham1220, public).
