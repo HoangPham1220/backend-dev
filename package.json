@@ -1,0 +1,17 @@
+{
+  "name": "backend-dev",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lộ trình tự học Node.js backend 3 tháng: bài tập tự chấm, context cho AI trợ giảng",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "node scripts/check.js",
+    "watch": "node scripts/check.js --watch",
+    "list": "node scripts/list.js",
+    "context": "node scripts/context.js",
+    "du-an": "node scripts/du-an.js"
+  }
+}
