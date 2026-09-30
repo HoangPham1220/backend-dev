@@ -120,6 +120,8 @@ Bài chính giúp làm ticket nhanh hơn; nếu đã tự làm được ticket t
 
 - Dùng `npm run watch wN-XX` để tự chấm lại mỗi lần lưu file, không phải gõ lại lệnh.
 - **Kẹt 20–30 phút** mới mở "Gợi ý mức 1" trong README. Vẫn kẹt thì hỏi AI để xin gợi ý, không xin đáp án.
+- **Đáp án** nằm ở repo private riêng `backend-dev-solutions` (bài tập và cả Voltix hoàn chỉnh). Chỉ mở **sau khi
+  đã tự làm xong** để so sánh cách viết, hoặc khi kẹt hẳn sau khi đã xin gợi ý mức 1 và 2. Hướng dẫn: README của repo đó.
 - Test trượt là thông tin, không phải thất bại. Tập đọc dòng `expected/actual` và stack trace, đây là kỹ năng
   đi làm dùng hằng ngày.
 
