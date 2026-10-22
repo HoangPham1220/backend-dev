@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#142c26">
+  <title>Backend Lab · Học từng bước</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header><a href="#" class="brand">Backend<span>Lab</span></a><span class="tagline">Một bài mỗi bước.</span><button id="backup">Xuất bài làm</button><label class="button" for="restore">Nhập bài làm</label><input type="file" id="restore" accept="application/json" hidden></header>
+  <div class="layout">
+    <aside><p class="eyebrow">LỘ TRÌNH CỦA BẠN</p><h1>Học. Viết.<br>Hiểu.</h1><label for="search">Tìm bài học</label><input id="search" type="search" placeholder="Closure, w2-08…"><label for="week">Chọn tuần</label><select id="week"><option value="">Tất cả các tuần</option></select><nav id="lessons" aria-label="Danh sách bài"></nav></aside>
+    <main><div class="lesson-heading"><div><p class="eyebrow" id="lesson-id">BACKEND / JAVASCRIPT</p><h2 id="title">Đang tải bài học…</h2></div><span id="support" class="badge"></span></div>
+      <p id="notice" role="status">Bài làm lưu trên trình duyệt này. Dùng Xuất / Nhập để chuyển thiết bị.</p>
+      <div class="tabs" role="tablist" aria-label="Không gian học"><button role="tab" data-tab="readme" aria-selected="true">01 · Đề bài</button><button role="tab" data-tab="code" aria-selected="false">02 · Viết code</button><button role="tab" data-tab="results" aria-selected="false">03 · Kết quả</button></div>
+      <section id="readme" class="panel"><article id="prose"></article></section>
+      <section id="code" class="panel" hidden><div class="toolbar"><label for="files">File</label><select id="files"></select><button id="reset">Khôi phục file</button><button id="run" class="primary">Chạy test</button></div><p id="save-status" role="status"></p><label class="sr-only" for="editor">Nội dung file</label><textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea><p class="hint">File test chỉ đọc. Nút chạy dùng test gốc qua bộ tương thích trình duyệt; kết quả Node vẫn là chuẩn cuối cùng.</p></section>
+      <section id="results" class="panel" hidden><h3>Kết quả chạy</h3><pre id="output" aria-live="polite">Chọn bài, viết code rồi bấm Chạy test.</pre></section>
+    </main>
+  </div><footer>Backend Lab · Bài học từ repo của bạn · Code không tự đồng bộ về GitHub.</footer>
+  <script type="module" src="./app.js"></script>
+</body></html>
