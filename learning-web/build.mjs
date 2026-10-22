@@ -25,6 +25,15 @@ for (const name of await readdir(join(root, 'exercises'))) {
 }
 lessons.sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }));
 await writeFile(join(target, 'lessons.json'), JSON.stringify(lessons));
+const teaching = {};
+for (const path of ['AGENTS.md', 'LEARNING_CONTEXT.md', 'prompts/cham-bai.md']) {
+  try { teaching[path] = await readFile(join(root, path), 'utf8'); }
+  catch (error) {
+    if (path !== 'AGENTS.md' || error.code !== 'ENOENT') throw error;
+    teaching[path] = await readFile(join(root, 'learning-web/teaching-rules.md'), 'utf8');
+  }
+}
+await writeFile(join(target, 'teaching.json'), JSON.stringify(teaching));
 for (const file of ['index.html', 'style.css', 'app.js', 'runner.js']) await copyFile(join(root, 'learning-web', file), join(target, file));
 await writeFile(join(target, '.nojekyll'), '');
 console.log(`Built ${lessons.length} lessons into learning-web/dist (browser runner: ${lessons.filter(l => l.supported).length}).`);

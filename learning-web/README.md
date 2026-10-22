@@ -16,6 +16,7 @@ Mở http://127.0.0.1:4173. Dừng server bằng Ctrl+C. Build chụp README, d�
 ## Học trên web
 
 - Chọn bài, chuyển Đề bài / Viết code / Kết quả.
+- **Gửi ngữ cảnh cho AI** tải file Markdown của bài đang mở: đề, test chuẩn, code mới nhất trên thiết bị, kết quả đang hiển thị và tài liệu giảng dạy. Đính kèm file vào chat; không tự gửi lên AI. Không bao gồm lịch sử chat/tiến độ các bài khác. Build dùng AGENTS.md hiện tại; nếu file không có trên nhánh deploy thì dùng bản quy tắc trong `learning-web/teaching-rules.md`.
 - Chọn file bằng danh sách; file test gốc chỉ đọc.
 - Sửa code được lưu trong localStorage của trình duyệt. Không tự ghi vào repo hoặc đồng bộ giữa thiết bị. Chế độ riêng tư/xóa dữ liệu trình duyệt có thể mất bài.
 - Dùng **Xuất bài làm** để tạo JSON sao lưu, chuyển file đó sang điện thoại rồi **Nhập bài làm**. Nhập sẽ hỏi trước khi thay file trùng.
