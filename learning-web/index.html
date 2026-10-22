@@ -13,6 +13,11 @@
     <main><div class="lesson-heading"><div><p class="eyebrow" id="lesson-id">BACKEND / JAVASCRIPT</p><h2 id="title">Đang tải bài học…</h2></div><span id="support" class="badge"></span></div>
       <p id="notice" role="status">Bài làm lưu trên trình duyệt này. Dùng Xuất / Nhập để chuyển thiết bị.</p>
       <button id="ai-context" disabled>Gửi ngữ cảnh cho AI</button><p class="hint">Tải file ngữ cảnh của bài đang mở, rồi đính kèm vào ChatGPT. Không tự gửi dữ liệu.</p>
+      <section id="context-panel" hidden aria-label="Ngữ cảnh cho AI">
+        <p id="context-status" role="status"></p>
+        <div class="toolbar"><a id="context-download" class="button" hidden>Tải file ngữ cảnh</a><button id="context-copy" hidden>Sao chép nội dung</button><button id="context-close">Đóng</button></div>
+        <label for="context-text">Nội dung để gửi cho AI</label><textarea id="context-text" readonly hidden spellcheck="false"></textarea>
+      </section>
       <div class="tabs" role="tablist" aria-label="Không gian học"><button role="tab" data-tab="readme" aria-selected="true">01 · Đề bài</button><button role="tab" data-tab="code" aria-selected="false">02 · Viết code</button><button role="tab" data-tab="results" aria-selected="false">03 · Kết quả</button></div>
       <section id="readme" class="panel"><article id="prose"></article></section>
       <section id="code" class="panel" hidden><div class="toolbar"><label for="files">File</label><select id="files"></select><button id="reset">Khôi phục file</button><button id="run" class="primary">Chạy test</button></div><p id="save-status" role="status"></p><label class="sr-only" for="editor">Nội dung file</label><textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea><p class="hint">File test chỉ đọc. Nút chạy dùng test gốc qua bộ tương thích trình duyệt; kết quả Node vẫn là chuẩn cuối cùng.</p></section>

@@ -3,6 +3,7 @@ const prefix = 'backend-lab:v1:';
 let lessons = [], current, filename, worker, timer;
 let drafts = {};
 let teaching = {};
+let contextUrl;
 try { drafts = JSON.parse(localStorage.getItem(prefix + 'drafts') || '{}'); } catch { /* Keep page usable when storage is unavailable. */ }
 const escape = text => text.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 function markdown(text) {
@@ -56,6 +57,7 @@ function choose(id) {
   stop();
   current = lessons.find(l => l.id === id) || lessons[0];
   if (!current) return;
+  $('context-panel').hidden = true;
   $('ai-context').disabled = false;
   $('title').textContent = current.title;
   $('lesson-id').textContent = current.id.toUpperCase();
@@ -129,6 +131,12 @@ $('ai-context').onclick = async () => {
   save();
   const button = $('ai-context');
   button.disabled = true;
+  const lesson = current;
+  $('context-panel').hidden = false;
+  $('context-status').textContent = 'Đang tạo ngữ cảnh…';
+  $('context-download').hidden = true;
+  $('context-copy').hidden = true;
+  $('context-text').hidden = true;
   try {
     if (!Object.keys(teaching).length) {
       const response = await fetch('./teaching.json');
@@ -153,12 +161,26 @@ $('ai-context').onclick = async () => {
       sections.push(`## ${isTest ? 'Test chuẩn (không chỉnh sửa)' : 'File bài học / code hiện tại'}: ${path}\n${fence(content)}`);
     }
     sections.push('## Kết quả hiện hiển thị\n' + fence($('output').textContent));
-    const url = URL.createObjectURL(new Blob([sections.join('\n\n')], { type: 'text/markdown;charset=utf-8' }));
-    const a = document.createElement('a'); a.href = url; a.download = current.id + '-ngu-canh-ai.md'; a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    $('notice').textContent = 'Đã tạo file ngữ cảnh. Hãy đính kèm file vào cuộc trò chuyện ChatGPT để được hướng dẫn bài này.';
-  } catch (error) { $('notice').textContent = error.message; }
+    if (current !== lesson) return;
+    const text = sections.join('\n\n');
+    if (contextUrl) URL.revokeObjectURL(contextUrl);
+    contextUrl = URL.createObjectURL(new Blob([text], { type: 'text/markdown;charset=utf-8' }));
+    const a = $('context-download'); a.href = contextUrl; a.download = current.id + '-ngu-canh-ai.md'; a.hidden = false;
+    $('context-copy').hidden = false;
+    $('context-text').value = text; $('context-text').hidden = false;
+    $('context-status').textContent = 'Ngữ cảnh đã sẵn sàng. Bấm Tải file để đính kèm vào ChatGPT, hoặc Sao chép nội dung để dán vào chat.';
+  } catch (error) { $('context-status').textContent = error.message; }
   finally { button.disabled = false; }
+};
+$('context-close').onclick = () => { $('context-panel').hidden = true; };
+$('context-copy').onclick = async () => {
+  try {
+    await navigator.clipboard.writeText($('context-text').value);
+    $('context-status').textContent = 'Đã sao chép. Bạn có thể dán vào ChatGPT.';
+  } catch {
+    $('context-text').focus(); $('context-text').select();
+    $('context-status').textContent = 'Trình duyệt không cho sao chép tự động. Nội dung đã được chọn; hãy dùng Sao chép của thiết bị.';
+  }
 };
 $('restore').onchange = async e => {
   try {

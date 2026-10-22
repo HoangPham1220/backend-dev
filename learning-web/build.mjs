@@ -1,6 +1,7 @@
-import { readdir, readFile, mkdir, writeFile, copyFile } from 'node:fs/promises';
+import { readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const target = resolve(root, 'learning-web/dist');
@@ -34,6 +35,15 @@ for (const path of ['AGENTS.md', 'LEARNING_CONTEXT.md', 'prompts/cham-bai.md']) 
   }
 }
 await writeFile(join(target, 'teaching.json'), JSON.stringify(teaching));
-for (const file of ['index.html', 'style.css', 'app.js', 'runner.js']) await copyFile(join(root, 'learning-web', file), join(target, file));
+const assets = ['index.html', 'style.css', 'app.js', 'runner.js'];
+const revision = createHash('sha256');
+for (const file of assets) revision.update(await readFile(join(root, 'learning-web', file)));
+const version = revision.digest('hex').slice(0, 12);
+for (const file of assets) {
+  let source = await readFile(join(root, 'learning-web', file), 'utf8');
+  if (file === 'index.html') source = source.replace('./app.js', `./app.js?v=${version}`).replace('./style.css', `./style.css?v=${version}`);
+  if (file === 'app.js') source = source.replace("'./runner.js'", `'./runner.js?v=${version}'`);
+  await writeFile(join(target, file), source);
+}
 await writeFile(join(target, '.nojekyll'), '');
 console.log(`Built ${lessons.length} lessons into learning-web/dist (browser runner: ${lessons.filter(l => l.supported).length}).`);
