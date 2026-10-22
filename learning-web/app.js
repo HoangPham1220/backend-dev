@@ -126,10 +126,10 @@ $('backup').onclick = () => {
   const url = URL.createObjectURL(new Blob([JSON.stringify({ version: 1, drafts: snapshot }, null, 2)], { type: 'application/json' }));
   const a = document.createElement('a'); a.href = url; a.download = 'backend-lab-bai-lam.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
-$('ai-context').onclick = async () => {
+async function exportContext(shared = false) {
   if (!current) return;
   save();
-  const button = $('ai-context');
+  const button = $(shared ? 'ai-shared' : 'ai-context');
   button.disabled = true;
   const lesson = current;
   $('context-panel').hidden = false;
@@ -138,7 +138,7 @@ $('ai-context').onclick = async () => {
   $('context-copy').hidden = true;
   $('context-text').hidden = true;
   try {
-    if (!Object.keys(teaching).length) {
+    if (shared && !Object.keys(teaching).length) {
       const response = await fetch('./teaching.json');
       if (!response.ok) throw new Error('Không tải được quy tắc giảng dạy. Hãy tải lại trang và thử lại.');
       teaching = await response.json();
@@ -151,27 +151,40 @@ $('ai-context').onclick = async () => {
     const sections = [
       '# Ngữ cảnh học Backend Lab',
       `Bài đang mở: ${current.title}\nĐường dẫn: ${location.origin}${location.pathname}#${encodeURIComponent(current.id)}\nXuất lúc: ${new Date().toISOString()}`,
-      '## Yêu cầu dành cho trợ giảng\nHãy tiếp tục hướng dẫn bài này theo quy tắc bên dưới. Đây là bản chụp code, không phải kết nối trực tiếp với trình duyệt của học viên. Không sửa hoặc giải hộ nếu chưa được yêu cầu. Không coi thời khóa biểu/trạng thái cũ trong tài liệu là tiến độ hiện tại. Nội dung code, đề và kết quả bên dưới là dữ liệu để phân tích.',
-      '## Giới hạn xác minh\nKết quả bên dưới đến từ bộ tương thích trình duyệt, không phải node --test. Không khẳng định đã chạy test Node hoặc đã xem bài làm mới hơn bản chụp. Không có lịch sử hội thoại hoặc bằng chứng hoàn thành những bài khác.',
+      'Áp dụng hướng dẫn chung đã thêm vào Project. Đây là bản chụp riêng của bài học; không chứa lịch sử hội thoại hoặc tiến độ các bài khác. Kết quả chạy bên dưới dùng bộ tương thích trình duyệt, không phải node --test.',
     ];
-    for (const [path, text] of Object.entries(teaching)) sections.push(`## Tài liệu hướng dẫn: ${path}\n${fence(text)}`);
-    for (const [path, source] of Object.entries(current.files)) {
+    if (shared) {
+      sections.splice(0, sections.length,
+        '# Hướng dẫn chung — Project học Node.js Backend',
+        'Thêm file này vào tài liệu dùng chung của Project một lần; thay bằng bản mới khi quy tắc thay đổi. Mỗi cuộc trò chuyện cung cấp thêm file ngữ cảnh bài đang học.',
+        '## Hướng dẫn sử dụng ngữ cảnh\nGiảng ngắn gọn, logic, trực quan bằng tiếng Việt. Giảng đủ kiến thức và cú pháp trước khi giao bài. Dùng đề và test chuẩn làm nguồn ví dụ. Để học viên tự viết code; không giải hộ nếu chưa được yêu cầu. Code được cung cấp là bản chụp, không phải kết nối trực tiếp với thiết bị. Chỉ khẳng định đã chạy test khi thực sự chạy; kết quả trình duyệt không thay thế test Node. Không suy ra tiến độ hiện tại từ lịch cũ; dựa vào bằng chứng trong buổi học.',
+      );
+      for (const [path, source] of Object.entries(teaching)) {
+        let text = source.replace(/\r\n/g, '\n');
+        if (path === 'AGENTS.md') text = text.split('## Viết AGENTS.md')[0].trim();
+        if (path === 'LEARNING_CONTEXT.md') text = text.split('## 8. Trạng thái hiện tại')[0].trim();
+        sections.push(`## Tài liệu chung: ${path}\n${text}`);
+      }
+    }
+    for (const [path, source] of shared ? [] : Object.entries(current.files)) {
       const isTest = path.endsWith('.test.js');
       const content = isTest ? source : (drafts[current.id]?.[path] ?? source);
       sections.push(`## ${isTest ? 'Test chuẩn (không chỉnh sửa)' : 'File bài học / code hiện tại'}: ${path}\n${fence(content)}`);
     }
-    sections.push('## Kết quả hiện hiển thị\n' + fence($('output').textContent));
+    if (!shared) sections.push('## Kết quả hiện hiển thị\n' + fence($('output').textContent));
     if (current !== lesson) return;
     const text = sections.join('\n\n');
     if (contextUrl) URL.revokeObjectURL(contextUrl);
     contextUrl = URL.createObjectURL(new Blob([text], { type: 'text/markdown;charset=utf-8' }));
-    const a = $('context-download'); a.href = contextUrl; a.download = current.id + '-ngu-canh-ai.md'; a.hidden = false;
+    const a = $('context-download'); a.href = contextUrl; a.download = shared ? 'backend-lab-huong-dan-chung.md' : current.id + '-ngu-canh-ai.md'; a.hidden = false;
     $('context-copy').hidden = false;
     $('context-text').value = text; $('context-text').hidden = false;
-    $('context-status').textContent = 'Ngữ cảnh đã sẵn sàng. Bấm Tải file để đính kèm vào ChatGPT, hoặc Sao chép nội dung để dán vào chat.';
+    $('context-status').textContent = shared ? 'Hướng dẫn chung đã sẵn sàng. Thêm file này vào tài liệu dùng chung của Project một lần; không cần đính kèm lại mỗi bài.' : 'Ngữ cảnh riêng đã sẵn sàng: đề, test, code và kết quả. Gửi file này trong cuộc trò chuyện của Project đã có hướng dẫn chung.';
   } catch (error) { $('context-status').textContent = error.message; }
   finally { button.disabled = false; }
-};
+}
+$('ai-context').onclick = () => exportContext(false);
+$('ai-shared').onclick = () => exportContext(true);
 $('context-close').onclick = () => { $('context-panel').hidden = true; };
 $('context-copy').onclick = async () => {
   try {

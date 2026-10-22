@@ -16,7 +16,8 @@ Mở http://127.0.0.1:4173. Dừng server bằng Ctrl+C. Build chụp README, d�
 ## Học trên web
 
 - Chọn bài, chuyển Đề bài / Viết code / Kết quả.
-- **Gửi ngữ cảnh cho AI** mở khung xem nội dung của bài đang mở: đề, test chuẩn, code mới nhất trên thiết bị, kết quả đang hiển thị và tài liệu giảng dạy. Bấm **Tải file ngữ cảnh** để lấy Markdown đính kèm vào chat, hoặc **Sao chép nội dung** để dán. Không tự gửi lên AI; không bao gồm lịch sử chat/tiến độ các bài khác. Build dùng AGENTS.md hiện tại; nếu file không có trên nhánh deploy thì dùng bản quy tắc trong `learning-web/teaching-rules.md`.
+- **Hướng dẫn chung cho Project** xuất quy tắc giảng dạy, bối cảnh học tập/lộ trình và quy trình review để thêm vào tài liệu Project một lần. Loại phần bảo trì AGENTS.md và mục trạng thái khởi đầu đã cũ. Cập nhật file chung khi quy tắc thay đổi. Build dùng AGENTS.md hiện tại, hoặc bản dự phòng `learning-web/teaching-rules.md` khi deploy không có AGENTS.md.
+- **Ngữ cảnh bài hiện tại** chỉ xuất đề, test chuẩn, code mới nhất trên thiết bị và kết quả đang hiển thị; không lặp tài liệu chung. Gửi trong chat của Project đã có hướng dẫn chung. Hai nút đều cho tải Markdown hoặc sao chép nội dung; không tự gửi dữ liệu lên AI. Không bao gồm lịch sử chat/tiến độ các bài khác.
 - Chọn file bằng danh sách; file test gốc chỉ đọc.
 - Sửa code được lưu trong localStorage của trình duyệt. Không tự ghi vào repo hoặc đồng bộ giữa thiết bị. Chế độ riêng tư/xóa dữ liệu trình duyệt có thể mất bài.
 - Dùng **Xuất bài làm** để tạo JSON sao lưu, chuyển file đó sang điện thoại rồi **Nhập bài làm**. Nhập sẽ hỏi trước khi thay file trùng.
